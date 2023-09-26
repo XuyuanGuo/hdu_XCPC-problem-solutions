@@ -1,0 +1,8 @@
+int powerSE(int a,int b){
+    a=a%1000;
+    int pow;
+    if(b==0) return 1;
+    pow=powerSE(a*a,b/2);
+    if(b%2==1) pow=pow*a%1000;
+    return pow;
+}

@@ -1,0 +1,56 @@
+#include<stdio.h>
+#include<string.h>
+#include<queue>
+#include<algorithm>
+using namespace std;
+
+struct pos{
+    int x,y;
+    int steps;
+};
+
+struct mov{
+    int x,y;
+}m[8]={{-2,1},{-2,-1},{-1,2},{-1,-2},{1,2},{1,-2},{2,1},{2,-1}};
+
+int vis[9][9];
+char l1[3],l2[3];
+void bfs();
+
+int main(){
+    while(scanf("%s%s",l1,l2)==2){
+        memset(vis,0,sizeof(vis));
+        bfs();
+    }
+    return 0;
+}
+
+void bfs(){
+    pos cur,nex;
+    cur.x=l1[0]-'a'+1;
+    cur.y=l1[1]-'0';
+    cur.steps=0;
+    vis[cur.x][cur.y]=1;
+    queue<pos> q;
+    q.push(cur);
+    while(!q.empty()){
+        cur=q.front();
+        q.pop();
+        if(cur.x==l2[0]-'a'+1&&cur.y==l2[1]-'0'){
+            printf("To get from %s to %s takes %d knight moves.\n",l1,l2,cur.steps);
+            return;
+        }
+        nex.steps=cur.steps+1;
+        for(int i=0;i<8;i++){
+            nex.x=cur.x+m[i].x;
+            nex.y=cur.y+m[i].y;
+            if(nex.x>=1&&nex.x<=8&&nex.y>=1&&nex.y<=8){
+                if(!vis[nex.x][nex.y]){
+                    q.push(nex);
+                    vis[nex.x][nex.y]=1;
+                }
+            }
+        }
+    }
+    return;
+}

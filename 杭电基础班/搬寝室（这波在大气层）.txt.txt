@@ -1,0 +1,27 @@
+#include<iostream>
+#include<cmath>
+#include<algorithm>
+using namespace std;
+
+int main() {
+	int n, k, a[2001];
+	while (cin >> n >> k) {
+		int	y[2][2001] = { 0 };
+		for (int i = 1; i <= n; i++) {
+			cin >> a[i];
+		}
+		sort(a + 1, a + n + 1);
+		for (int i = 1; i <= k; i++) {
+			for (int j = 2 * i; j <= n; j++) {
+				if (j == 2 * i) {
+					y[i % 2][j] = y[(i - 1) % 2][j - 2] + (a[j - 1] - a[j]) * (a[j - 1] - a[j]);
+				}
+				else {
+					y[i % 2][j] = min(y[i % 2][j - 1], y[(i - 1) % 2][j - 2] + (a[j - 1] - a[j]) * (a[j - 1] - a[j]));
+				}
+			}
+		}
+		cout << y[k % 2][n] << endl;
+	}
+	return 0;
+}

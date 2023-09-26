@@ -1,0 +1,37 @@
+#include<stdio.h>
+#include<string.h>
+#include<algorithm>
+using namespace std;
+
+int n,k,cheese[101][101],ans[101][101],mov[4][2]={-1,0,0,1,0,-1,1,0};
+int dfs(int x,int y);
+
+int main(){
+    while(scanf("%d%d",&n,&k)==2){
+        if(n==-1&&k==-1) break;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                scanf("%d",&cheese[i][j]);
+            }
+        }
+        memset(ans,-1,sizeof(ans));
+        printf("%d\n",dfs(0,0));
+    }
+    return 0;
+}
+
+int dfs(int x,int y){
+    if(ans[x][y]!=-1) return ans[x][y];
+    int xx,yy,answer=0;
+    for(int i=0;i<4;i++){
+        for(int j=1;j<=k;j++){
+            xx=x+mov[i][0]*j;
+            yy=y+mov[i][1]*j;
+            if(xx>=0&&xx<n&&yy>=0&&yy<n&&cheese[xx][yy]>cheese[x][y]){
+                answer=max(answer,dfs(xx,yy));
+            }
+        }
+    }
+    ans[x][y]=answer+cheese[x][y];
+    return ans[x][y];
+}

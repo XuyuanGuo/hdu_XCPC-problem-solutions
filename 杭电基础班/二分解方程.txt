@@ -1,0 +1,32 @@
+#include<iostream>
+#include<iomanip>
+#include<cmath>
+#include<algorithm>
+using namespace std;
+
+double f(double a){
+    return 8*a*a*a*a+7*a*a*a+2*a*a+3*a+6;
+}
+
+int main(){
+    int T;
+    cin>>T;
+    while(T--){
+        double Y,left=0,right=100,middle;
+        cin>>Y;
+        if(f(left)>Y||f(right)<Y) cout<<"No solution!"<<endl;
+        else{
+            while(right-left>1e-12){
+                middle=(left+right)/2;
+                if(f(middle)>Y){
+                    right=middle;
+                }
+                else{
+                    left=middle;
+                }
+            }
+            cout<<setiosflags(ios::fixed)<<setprecision(4)<<round(((left+right)/2)*1e4)/1e4<<endl;
+        }
+    }
+    return 0;
+}

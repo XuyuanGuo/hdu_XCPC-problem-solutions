@@ -1,0 +1,26 @@
+#include<stdio.h>
+#include<string.h>
+#include<math.h>
+using namespace std;
+
+int main(){
+    int M,n[101];
+    while(scanf("%d",&M),M){
+        int temp=0,cnt=0;
+        for(int i=1;i<=M;i++){
+            scanf("%d",&n[i]);
+            temp=temp^n[i];
+        }
+        if(temp==0) puts("0");
+        else{
+            int t=log(temp)/log(2);
+            for(int i=1;i<=M;i++){
+                if((n[i]>>t)%2==1){
+                    cnt++;
+                }
+            }
+            printf("%d\n",cnt);
+        }
+    }
+    return 0;
+}

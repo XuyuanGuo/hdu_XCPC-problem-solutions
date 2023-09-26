@@ -1,0 +1,64 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int m=1000000007,N=4;
+
+struct mat{
+    long long m[4][4];
+}B={1,1,1,1,
+    0,1,1,1,
+    0,1,0,0,
+    0,0,1,0};
+
+mat multi(mat a,mat b){
+    mat c;
+    memset(c.m,0,sizeof(c.m));
+    for(int i=0;i<N;i++){
+        for(int k=0;k<N;k++){
+            if(a.m[i][k]==0) continue;
+            for(int j=0;j<N;j++){
+                c.m[i][j]=(c.m[i][j]+(a.m[i][k]%m)*(b.m[k][j]%m))%m;
+            }
+        }
+    }
+    return c;
+}
+
+mat power(mat a,int k){
+    mat res;
+    memset(res.m,0,sizeof(res.m));
+    for(int i=0;i<N;i++){
+        res.m[i][i]=1;
+    }
+    if(k==0) return res;
+    res=power(multi(a,a),k/2);
+    if(k%2) res=multi(res,a);
+    return res;
+}
+
+int main(){
+    int a,b,Sa,Sb,ans0[4]={3,1,1,1};
+    while(scanf("%d%d",&a,&b)==2){
+        a--;
+        if(a<=2){
+            Sa=a+1;
+        }else{
+            mat Ba=power(B,a-2);
+            Sa=0;
+            for(int i=0;i<N;i++){
+                Sa=(Sa+Ba.m[0][i]*ans0[i])%m;
+            }
+        }
+        if(b<=2){
+            Sb=b+1;
+        }else{
+            mat Bb=power(B,b-2);
+            Sb=0;
+            for(int i=0;i<N;i++){
+                Sb=(Sb+Bb.m[0][i]*ans0[i])%m;
+            }
+        }
+        printf("%d\n",(Sb-Sa+m)%m);
+    }
+    return 0;
+}

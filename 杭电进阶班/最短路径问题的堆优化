@@ -1,0 +1,69 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define inf 0x7fffffff;
+
+struct location{
+    int l;
+    int dis;
+    friend bool operator <(location a,location b){
+        if(a.dis!=b.dis) return a.dis>b.dis;
+        return a.l>b.l;
+    }
+};
+
+struct Edge{
+    int to,next,dis;
+}edge[1001];
+
+int n,s,t,cnt,head[201],vis[201],dist[201];
+int dp();
+void addedge(int a,int b,int x){
+    edge[++cnt].to=b;
+    edge[cnt].dis=x;
+    edge[cnt].next=head[a];
+    head[a]=cnt;
+}
+
+int main(){
+    int m,a,b,x;
+    while(scanf("%d%d",&n,&m)==2){
+        memset(head,-1,sizeof(head));
+        memset(vis,0,sizeof(vis));
+        for(int i=0;i<n;i++){
+            dist[i]=inf;
+        }
+        cnt=0;
+        for(int i=0;i<m;i++){
+            scanf("%d%d%d",&a,&b,&x);
+            addedge(a,b,x);
+            addedge(b,a,x);
+        }
+        scanf("%d%d",&s,&t);
+        printf("%d\n",dp());
+    }
+    return 0;
+}
+
+int dp(){
+    priority_queue<location> q;
+    location cur,nex;
+    cur.l=s;
+    cur.dis=0;
+    q.push(cur);
+    while(!q.empty()){
+        cur=q.top();
+        q.pop();
+        if(cur.l==t) return cur.dis;
+        if(!vis[cur.l]){
+            vis[cur.l]=1;
+            for(int i=head[cur.l];~i;i=edge[i].next){
+                if(dist[edge[i].to]>cur.dis+edge[i].dis){
+                    dist[edge[i].to]=cur.dis+edge[i].dis;
+                    nex.l=edge[i].to;   nex.dis=dist[edge[i].to];
+                    q.push(nex);
+                }
+            }
+        }
+    }
+    return -1;
+}

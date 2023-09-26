@@ -1,0 +1,57 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int q[100001],cnt,cnt2;
+vector<int> edge1[100001],edge2[100001];
+bool vis[100001];
+
+void dfs1(int x){
+    vis[x]=1;
+    for(int i=0;i<edge1[x].size();i++){
+        if(!vis[edge1[x][i]])
+            dfs1(edge1[x][i]);
+    }
+    q[cnt++]=x;
+}
+
+void dfs2(int x,int y){
+    vis[x]=0;
+    for(int i=0;i<edge2[x].size();i++){
+        if(vis[edge2[x][i]])
+            dfs2(edge2[x][i],y);
+    }
+    cnt2++;
+}
+
+int main(){
+    int T,n,m;
+    scanf("%d",&T);
+    while(T--){
+        scanf("%d%d",&n,&m);
+        int ans=0;
+        cnt=0;
+        memset(vis,0,sizeof(vis));
+        memset(q,0,sizeof(q));
+        for(int i=0;i<n;i++){
+            edge1[i].clear();
+            edge2[i].clear();
+        }
+        while(m--){
+            int u,v;
+            scanf("%d%d",&u,&v);
+            edge1[u].push_back(v);
+            edge2[v].push_back(u);
+        }
+        for(int i=0;i<n;i++){
+            if(!vis[i])
+                dfs1(i);
+        }
+        for(int i=n-1;i;i--){
+            cnt2=0;
+            if(vis[q[i]])
+                dfs2(q[i],q[i]);
+            ans+=cnt2*(cnt2-1)/2;
+        }
+        printf("%d\n",ans);
+    }
+}

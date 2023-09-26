@@ -1,0 +1,35 @@
+#include<stdio.h>
+#include<string.h>
+#include<queue>
+#include<algorithm>
+using namespace std;
+
+int n,num[11],vis[11];
+void dfs(int step);
+
+int main(){
+    while(scanf("%d",&n)==1){
+        memset(vis,0,sizeof(vis));
+        dfs(1);
+    }
+    return 0;
+}
+
+void dfs(int step){
+    if(step==n+1){
+        for(int i=1;i<=n;i++){
+            printf("%d",num[i]);
+            printf(i==n?"\n":" ");
+        }
+        return;
+    }
+    for(int i=1;i<=n;i++){
+        if(!vis[i]){
+            vis[i]=1;
+            num[step]=i;
+            dfs(step+1);
+            vis[i]=0;
+        }
+    }
+    return;
+}

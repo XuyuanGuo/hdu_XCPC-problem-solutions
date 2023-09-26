@@ -1,0 +1,58 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int N;
+
+struct mat{
+    int m[101][101];
+}B;
+
+mat multi(mat a,mat b){
+    mat c;
+    memset(c.m,0,sizeof(c.m));
+    for(int i=0;i<N;i++){
+        for(int k=0;k<N;k++){
+            if(a.m[i][k]==0) continue;
+            for(int j=0;j<N;j++){
+                c.m[i][j]=(c.m[i][j]+a.m[i][k]*b.m[k][j])%2;
+            }
+        }
+    }
+    return c;
+}
+
+mat power(mat a,int k){
+    mat res;
+    memset(res.m,0,sizeof(res.m));
+    for(int i=0;i<N;i++){
+        res.m[i][i]=1;
+    }
+    if(k==0) return res;
+    res=power(multi(a,a),k/2);
+    if(k%2) res=multi(res,a);
+    return res;
+}
+
+int main(){
+    int M;
+    string T,T1;
+    while(scanf("%d",&M)==1){
+        cin>>T;
+        N=T.size();
+        memset(B.m,0,sizeof(B.m));
+        B.m[0][0]=B.m[0][N-1]=1;
+        for(int i=1;i<N;i++){
+            B.m[i][i-1]=B.m[i][i]=1;
+        }
+        mat Bn=power(B,M);
+        T1=T;
+        for(int i=0;i<N;i++){
+            T1[i]='0';
+            for(int j=0;j<N;j++){
+                T1[i]=(1*(T1[i]-'0')+1*Bn.m[i][j]*(T[j]-'0'))%2+'0';
+            }
+        }
+        cout<<T1<<endl;
+    }
+    return 0;
+}

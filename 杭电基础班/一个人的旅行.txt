@@ -1,0 +1,55 @@
+#include<stdio.h>
+#include<algorithm>
+#define inf 0x7fffffff
+using namespace std;
+
+int map[1002][1002],visit[1002],dist[1002];
+
+int main(){
+    int t,s,d;
+    while(scanf("%d%d%d",&t,&s,&d)==3){
+        for(int i=0;i<=1001;i++){
+            visit[i]=1;
+            dist[i]=inf;
+            for(int j=0;j<=1001;j++){
+                map[i][j]=inf;
+            }
+        }
+        while(t--){
+            int a,b,time;
+            scanf("%d%d%d",&a,&b,&time);
+            map[a][b]=min(map[a][b],time);
+            map[b][a]=map[a][b];
+        }
+        while(s--){
+            int temp;
+            scanf("%d",&temp);
+            map[0][temp]=0;
+            map[temp][0]=0;
+        }
+        while(d--){
+            int temp;
+            scanf("%d",&temp);
+            map[1001][temp]=0;
+            map[temp][1001]=0;
+        }
+        int start=0;
+        dist[start]=0;
+        visit[start]=0;
+        while(start!=1001){
+            int MIN=inf,next;
+            for(int i=0;i<=1001;i++){
+                if(map[start][i]!=inf) dist[i]=min(dist[i],dist[start]+map[start][i]);
+                if(visit[i]&&dist[i]<MIN){
+                    MIN=dist[i];
+                    next=i;
+                }
+            }
+            if(MIN==inf) break;
+            start=next;
+            visit[start]=0;
+        }
+        printf("%d\n",dist[1001]);
+    }
+    return 0;
+}

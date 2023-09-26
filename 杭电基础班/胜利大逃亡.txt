@@ -1,0 +1,70 @@
+#include<stdio.h>
+#include<string.h>
+#include<queue>
+#include<algorithm>
+using namespace std;
+
+struct pos{
+    int x,y,z;
+    int steps;
+};
+
+struct mov{
+    int x;
+    int y;
+    int z;
+}m[6]={{1,0,0},{-1,0,0},{0,1,0},{0,-1,0},{0,0,1},{0,0,-1}};
+
+int a,b,c,t,map[51][51][51];
+void bfs();
+
+int main(){
+    int K;
+    scanf("%d",&K);
+    while(K--){
+        scanf("%d%d%d%d",&a,&b,&c,&t);
+        for(int i=0;i<a;i++){
+            for(int j=0;j<b;j++){
+                for(int k=0;k<c;k++){
+                    scanf("%d",&map[i][j][k]);
+                }
+            }
+        }
+        bfs();
+    }
+    return 0;
+}
+
+void bfs(){
+    pos cur,nex;
+    cur.x=0;    cur.y=0;    cur.z=0;
+    cur.steps=0;
+    queue<pos> q;
+    q.push(cur);
+    map[0][0][0]=1;
+    while(!q.empty()){
+        cur=q.front();
+        q.pop();
+        if(cur.steps>t){
+            break;
+        }
+        if(cur.x==a-1&&cur.y==b-1&&cur.z==c-1){
+            printf("%d\n",cur.steps);
+            return;
+        }
+        for(int i=0;i<6;i++){
+            nex.x=cur.x+m[i].x;
+            nex.y=cur.y+m[i].y;
+            nex.z=cur.z+m[i].z;
+            if(nex.x>=0&&nex.x<=a-1&&nex.y>=0&&nex.y<=b-1&&nex.z>=0&&nex.z<=c-1){
+                if(map[nex.x][nex.y][nex.z]==0){
+                    nex.steps=cur.steps+1;
+                    q.push(nex);
+                    map[nex.x][nex.y][nex.z]=1;
+                }
+            }
+        }
+    }
+    puts("-1");
+    return;
+}

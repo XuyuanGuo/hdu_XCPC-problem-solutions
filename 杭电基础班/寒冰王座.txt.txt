@@ -1,0 +1,22 @@
+#define _CRT_SECURE_NO_DEPRECATE
+#include<stdio.h>
+#include<math.h>
+#include<string.h>
+#include<algorithm>
+using namespace std;
+
+int main() {
+	int T, N, a[4] = { 0,150,200,350 };
+	scanf("%d", &T);
+	while (T--) {
+		int dp[10001] = { 0 };
+		scanf("%d", &N);
+		for (int i = 1; i <= 3; i++) {
+			for (int j = a[i]; j <= N; j++) {
+				dp[j] = max(dp[j], dp[j - a[i]] + a[i]);
+			}
+		}
+		printf("%d\n", N - dp[N]);
+	}
+	return 0;
+}

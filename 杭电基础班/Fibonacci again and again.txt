@@ -1,0 +1,41 @@
+#include<stdio.h>
+#include<string.h>
+using namespace std;
+
+int f[1001];
+int fibonacci(int n);
+int sg(int a);
+
+int main(){
+    int m,n,p;
+    memset(f,-1,sizeof(f));
+    while(scanf("%d%d%d",&m,&n,&p)==3){
+        if(m==0&&n==0&&p==0) break;
+        if((sg(m)^sg(n)^sg(p))==0) puts("Nacci");//位运算符优先级低于关系运算符，所以要加括号
+        else puts("Fibo");
+    }
+    return 0;
+}
+
+int fibonacci(int n){
+    int temp1,temp2=1,temp=1;
+    if(n==1) return 1;
+    for(int i=1;i<n;i++){
+        temp1=temp2;
+        temp2=temp;
+        temp=temp1+temp2;
+    }
+    return temp;
+}
+
+int sg(int a){
+    int g[1001]={0};
+    for(int i=1;fibonacci(i)<=a;i++){
+        int t=a-fibonacci(i);
+        if(f[t]==-1) f[t]=sg(t);
+        g[f[t]]=1;
+    }
+    for(int i=0;;i++){
+        if(!g[i]) return i;
+    }
+}

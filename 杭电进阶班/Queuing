@@ -1,0 +1,51 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int m;
+
+struct mat{
+    int m[4][4];
+    int r,c;
+}B;
+
+mat multi(mat a,mat b){
+    mat c;
+    c.r=a.r;    c.c=b.c;
+    memset(c.m,0,sizeof(c.m));
+    for(int i=0;i<c.r;i++){
+        for(int k=0;k<a.c;k++){
+            if(a.m[i][k]==0) continue;
+            for(int j=0;j<c.c;j++){
+                c.m[i][j]=(c.m[i][j]+(a.m[i][k]%m)*(b.m[k][j]%m))%m;
+            }
+        }
+    }
+    return c;
+}
+
+mat power(mat a,int n){
+    mat res;
+    res.r=a.r; res.c=a.c;
+    memset(res.m,0,sizeof(res.m));
+    for(int i=0;i<res.r;i++){
+        res.m[i][i]=1;
+    }
+    if(n==0) return res;
+    res=power(multi(a,a),n/2);
+    if(n%2) res=multi(res,a);
+    return res;
+}
+
+int main(){
+    int l,a[10];
+    while(scanf("%d%d",&l,&m)==2){
+        memset(B.m,0,sizeof(B.m));
+        B.r=4; B.c=4;
+        B.m[0][0]=B.m[0][2]=B.m[0][3]=B.m[1][0]=B.m[2][1]=B.m[3][2]=1;
+        mat Bl=power(B,l-3);
+        Bl.c=B.c; 
+        int ans=Bl.m[0][0]*6+Bl.m[0][1]*4+Bl.m[0][2]*2+Bl.m[0][3];
+        printf("%d\n",ans%m);
+    }
+    return 0;
+}

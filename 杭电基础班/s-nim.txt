@@ -1,0 +1,44 @@
+#include<stdio.h>
+#include<string.h>
+#include<algorithm>
+using namespace std;
+
+int k,s[101],f[10001];
+int sg(int a);
+
+int main(){
+    int m,l,hi;
+    while(scanf("%d",&k),k){
+        memset(f,-1,sizeof(f));
+        for(int i=0;i<k;i++){
+            scanf("%d",&s[i]);
+        }
+        sort(s,s+k);
+        scanf("%d",&m);
+        while(m--){
+            int res=0;
+            scanf("%d",&l);
+            while(l--){
+                scanf("%d",&hi);
+                res^=sg(hi);
+            }
+            if(res==0) printf("L");
+            else printf("W");
+        }
+        printf("\n");
+    }
+    return 0;
+}
+
+int sg(int a){
+    int g[1001]={0};
+    for(int i=0;i<k;i++){
+        int t=a-s[i];
+        if(t<0) break;
+        if(f[t]==-1) f[t]=sg(t);
+        g[f[t]]=1;
+    }
+    for(int i=0;;i++){
+        if(!g[i]) return i;
+    }
+}

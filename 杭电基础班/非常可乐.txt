@@ -1,0 +1,104 @@
+#include<stdio.h>
+#include<string.h>
+#include<queue>
+#include<algorithm>
+using namespace std;
+
+struct pos{
+    int s;
+    int n;
+    int m;
+    int steps;
+};
+int s,n,m,vis[101][101];
+void bfs();
+
+int main(){
+    while(scanf("%d%d%d",&s,&n,&m),s){
+        if(s%2==1){
+            printf("NO\n");
+            continue;
+        }
+        memset(vis,0,sizeof(vis));
+        bfs();
+    }
+    return 0;
+}
+
+void bfs(){
+    pos cur,nex;
+    cur.s=s;
+    cur.n=0;    cur.m=0;
+    cur.steps=0;
+    queue<pos>q;
+    q.push(cur);
+    vis[cur.n][cur.m]=1;
+    while(!q.empty()){
+        cur=q.front();
+        q.pop();
+        if((cur.s==s/2&&cur.m==0)||(cur.s==s/2&&cur.n==0)||(cur.n==s/2&&cur.s==0)){
+            printf("%d\n",cur.steps);
+            return;
+        }
+        nex.steps=cur.steps+1;
+        nex.m=cur.m;
+        if(cur.s<n-cur.n){
+            nex.s=0;    nex.n=cur.n+cur.s;
+        }else{
+            nex.s=cur.s-(n-cur.n); nex.n=n;
+        }
+        if(!vis[nex.n][nex.m]){
+            q.push(nex);
+            vis[nex.n][nex.m]=1;
+        }
+        if(cur.n<s-cur.s){
+            nex.n=0;    nex.s=cur.s+cur.n;
+        }else{
+            nex.n=cur.n-(s-cur.s); nex.s=s;
+        }
+        if(!vis[nex.n][nex.m]){
+            q.push(nex);
+            vis[nex.n][nex.m]=1;
+        }
+        nex.n=cur.n;
+        if(cur.s<m-cur.m){
+            nex.s=0;    nex.m=cur.m+cur.s;
+        }else{
+            nex.s=cur.s-(m-cur.m); nex.m=m;
+        }
+        if(!vis[nex.n][nex.m]){
+            q.push(nex);
+            vis[nex.n][nex.m]=1;
+        }
+        if(cur.m<s-cur.s){
+            nex.m=0;    nex.s=cur.s+cur.m;
+        }else{
+            nex.m=cur.m-(s-cur.s); nex.s=s;
+        }
+        if(!vis[nex.n][nex.m]){
+            q.push(nex);
+            vis[nex.n][nex.m]=1;
+        }
+        nex.s=cur.s;
+        if(cur.n<m-cur.m){
+            nex.n=0;    nex.m=cur.m+cur.n;
+        }else{
+            nex.n=cur.n-(m-cur.m); nex.m=m;
+        }
+        if(!vis[nex.n][nex.m]){
+            q.push(nex);
+            vis[nex.n][nex.m]=1;
+        }
+        if(cur.m<n-cur.n){
+            nex.m=0;    nex.n=cur.n+cur.m;
+        }else{
+            nex.m=cur.m-(n-cur.n); nex.n=n;
+        }
+        if(!vis[nex.n][nex.m]){
+            q.push(nex);
+            vis[nex.n][nex.m]=1;
+        }
+    }
+    puts("NO");
+    return;
+}

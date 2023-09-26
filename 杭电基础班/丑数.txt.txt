@@ -1,0 +1,21 @@
+#define _CRT_SECURE_NO_DEPRECATE
+#include<stdio.h>
+#include<cmath>
+#include<algorithm>
+
+using namespace std;
+
+int main() {
+	int p[6001] = { 0,1 }, a = 1, b = 1, c = 1, d = 1, n;
+	for (int i = 2; i <= 5842; i++) {
+		p[i] = min(min(p[a] * 2, p[b] * 3), min(p[c] * 5, p[d] * 7));
+		if (p[i] == p[a] * 2) a++;
+		if (p[i] == p[b] * 3) b++;
+		if (p[i] == p[c] * 5) c++;
+		if (p[i] == p[d] * 7) d++;
+	}
+	while (scanf("%d", &n), n) {
+		printf("%d\n", p[n]);
+	}
+	return 0;
+}

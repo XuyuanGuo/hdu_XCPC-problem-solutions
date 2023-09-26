@@ -1,0 +1,38 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+    int n;
+    string o1,o2;
+    stack<int> s;
+    while(cin>>n){
+        cin>>o1>>o2;
+        int i=0,j=0;
+        s.push('0');
+        for(;i<n;i++){
+            s.push(o1[i]);
+            while(o2[j]==s.top()){
+                s.pop();
+                j++;
+            }
+        }
+        if(s.size()==1){
+            puts("Yes.");
+            j=0;
+            for(i=0;i<n;i++){
+                s.push(o1[i]);
+                puts("in");
+                while(o2[j]==s.top()){
+                    s.pop();
+                    puts("out");
+                    j++;
+                }
+            }
+        }else puts("No.");
+        puts("FINISH");
+        while(!s.empty()){
+            s.pop();
+        }
+    }
+    return 0;
+}

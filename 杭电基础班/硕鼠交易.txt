@@ -1,0 +1,34 @@
+struct change{
+    int j;
+    int f;
+    double a;
+}c[1001];
+
+bool cmp(change a,change b){
+    return a.a>b.a;
+}
+
+int main(){
+    int M,N;
+    while(cin>>M>>N&&(M!=-1||N!=-1)){
+        double W=0;
+        for(int i=0;i<N;i++){
+            cin>>c[i].j>>c[i].f;
+            c[i].a=c[i].j*1.0/c[i].f;
+        }
+        sort(c,c+N,cmp);
+        for(int i=0;i<N;i++){
+            if(M>c[i].f){
+                M-=c[i].f;
+                W+=c[i].j;
+            }
+            else{
+                W+=c[i].a*M;
+                break;
+            }
+        }
+        W=round(W*1000)/1000;
+        cout<<setiosflags(ios::fixed)<<setprecision(3)<<W<<endl;
+    }
+    return 0;
+}

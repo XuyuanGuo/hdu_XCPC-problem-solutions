@@ -1,0 +1,32 @@
+#define _CRT_SECURE_NO_DEPRECATE
+#include<stdio.h>
+#include<math.h>
+#include<algorithm>
+using namespace std;
+
+struct bone {
+	int num;
+	int v;
+}b[1001];
+
+int main() {
+	int T, N, V;
+	scanf("%d", &T);
+	while (T--) {
+		int f[1001] = { 0 };
+		scanf("%d %d", &N, &V);
+		for (int i = 1; i <= N; i++) {
+			scanf("%d", &b[i].num);
+		}
+		for (int i = 1; i <= N; i++) {
+			scanf("%d", &b[i].v);
+		}
+		for (int i = 1; i <= N; i++) {
+			for (int j = V; j >= b[i].v; j--) {
+				f[j] = max(f[j], f[j - b[i].v] + b[i].num);
+			}
+		}
+		printf("%d\n", f[V]);
+	}
+	return 0;
+}

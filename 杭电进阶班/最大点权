@@ -1,0 +1,77 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int q[100001],val[100001],f[100001],dp[100001],cnt;
+vector<int> edge1[100001],edge2[100001],edge[100001];
+bool vis[100001];
+
+void dfs1(int x){
+    vis[x]=1;
+    for(int i=0;i<edge1[x].size();i++){
+        if(!vis[edge1[x][i]])
+            dfs1(edge1[x][i]);
+    }
+    q[cnt++]=x;
+}
+
+void dfs2(int x,int y){
+    vis[x]=0;
+    f[x]=y;
+    for(int i=0;i<edge2[x].size();i++){
+        if(vis[edge2[x][i]])
+            dfs2(edge2[x][i],y);
+    }
+}
+
+int dfs(int x){
+    if(dp[x]!=-1)
+        return dp[x];
+    for(int i=0;i<edge[x].size();i++)
+        dp[x]=max(val[x],dfs(edge[x][i]));
+    dp[x]=max(dp[x],val[x]);
+    return dp[x];
+}
+
+int main(){
+    int T,n,m;
+    scanf("%d",&T);
+    while(T--){
+        scanf("%d%d",&n,&m);
+        for(int i=1;i<=n;i++){
+            scanf("%d",&val[i]);
+        }
+        int ans=0;
+        cnt=0;
+        memset(vis,0,sizeof(vis));
+        memset(q,0,sizeof(q));
+        memset(dp,-1,sizeof(dp));
+        for(int i=0;i<n;i++){
+            edge1[i].clear();
+            edge2[i].clear();
+        }
+        while(m--){
+            int u,v;
+            scanf("%d%d",&u,&v);
+            edge1[u].push_back(v);
+            edge2[v].push_back(u);
+        }
+        for(int i=1;i<=n;i++){
+            if(!vis[i])
+                dfs1(i);
+        }
+        for(int i=n;i;i--){
+            if(vis[q[i]])
+                dfs2(q[i],q[i]);
+        }
+        for(int i=0;i<n;i++){
+            val[f[i]]=max(val[i],val[f[i]]);
+            for(int j=0;j<edge1[i].size();j++){
+                if(f[i]!=f[edge1[i][j]])
+                edge[f[i]].push_back(f[edge1[i][j]]);
+            }
+        }
+        for(int i=1;i<=n;i++){
+            printf("%d\n",dfs(f[i]));
+        }
+    }
+}

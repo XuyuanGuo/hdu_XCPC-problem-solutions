@@ -1,0 +1,62 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int m;
+
+struct mat{
+    int m[10][10];
+    int r,c;
+}B;
+
+mat multi(mat a,mat b){
+    mat c;
+    c.r=a.r;    c.c=b.c;
+    memset(c.m,0,sizeof(c.m));
+    for(int i=0;i<c.r;i++){
+        for(int k=0;k<a.c;k++){
+            if(a.m[i][k]==0) continue;
+            for(int j=0;j<c.c;j++){
+                c.m[i][j]=(c.m[i][j]+(a.m[i][k]%m)*(b.m[k][j]%m))%m;
+            }
+        }
+    }
+    return c;
+}
+
+mat power(mat a,int n){
+    mat res;
+    res.r=a.r; res.c=a.c;
+    memset(res.m,0,sizeof(res.m));
+    for(int i=0;i<res.r;i++){
+        res.m[i][i]=1;
+    }
+    if(n==0) return res;
+    res=power(multi(a,a),n/2);
+    if(n%2) res=multi(res,a);
+    return res;
+}
+
+int main(){
+    int k,a[10];
+    while(scanf("%d%d",&k,&m)==2){
+        for(int i=0;i<10;i++){
+            scanf("%d",&a[i]);
+        }
+        memset(B.m,0,sizeof(B.m));
+        B.r=10; B.c=10;
+        for(int j=0;j<B.c;j++){
+            B.m[0][j]=a[j];
+        }
+        for(int i=0;i<B.r-1;i++){
+            B.m[i+1][i]=1;
+        }
+        mat Bk=power(B,k-9);
+        Bk.c=B.c; 
+        int ans=0;
+        for(int i=0;i<Bk.c;i++){
+            ans=(ans+Bk.m[0][i]*(9-i))%m;
+        }
+        printf("%d\n",ans);
+    }
+    return 0;
+}

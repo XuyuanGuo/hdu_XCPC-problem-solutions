@@ -1,0 +1,39 @@
+#include<iostream>
+#include<iomanip>
+#include<cmath>
+#include<algorithm>
+using namespace std;
+
+int bin[1001];
+
+int find(int x){
+    while(bin[x]!=x)
+        x=bin[x];
+    return x;
+}
+
+void merge(int a,int b){
+    int fa=find(a);
+    int fb=find(b);
+    if(fa!=fb)
+        bin[fa]=fb;
+}
+
+int main(){
+    int N,M,a,b,cnt=0;
+    while(cin>>N>>M&&N!=0){
+        for(int i=1;i<=N;i++){
+            bin[i]=i;
+        }
+        while(M--){
+            cin>>a>>b;
+            merge(a,b);
+        }
+        for(int i=1;i<=N;i++){
+            if(bin[i]==i) cnt++;
+        }
+        cout<<cnt-1<<endl;
+        cnt=0;
+    }
+    return 0;
+}

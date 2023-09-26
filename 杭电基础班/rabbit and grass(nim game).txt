@@ -1,0 +1,17 @@
+#include<stdio.h>
+#include<string.h>
+using namespace std;
+
+int main(){
+    int m,k;
+    while(scanf("%d",&m),m){
+        int res=0;
+        while(m--){
+            scanf("%d",&k);
+            res^=k;
+        }
+        if(res==0) puts("Grass Win!");
+        else puts("Rabbit Win!");
+    }
+    return 0;
+}

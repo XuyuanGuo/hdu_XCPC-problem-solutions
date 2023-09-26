@@ -1,0 +1,79 @@
+#include<stdio.h>
+#include<string.h>
+#include<queue>
+#include<algorithm>
+using namespace std;
+
+struct pos{
+    int x,y;
+    int steps;
+    friend bool operator < (pos a,pos b){
+        return a.steps>b.steps;
+    }
+};
+
+struct mov{
+    int x;
+    int y;
+}m[4]={{1,0},{0,1},{0,-1},{-1,0}};
+
+char map[201][201];
+int N,M,x0,y0;
+void bfs();
+
+int main(){
+    while(scanf("%d%d",&N,&M)==2){
+        getchar();
+        for(int i=1;i<=N;i++){
+            for(int j=1;j<=M+1;j++){
+                scanf("%c",&map[i][j]);
+                if(map[i][j]=='a'){
+                    y0=i;
+                    x0=j;
+                }
+            }
+        }
+        bfs();
+    }
+    return 0;
+}
+
+void bfs(){
+    pos cur,nex;
+    cur.x=x0;   cur.y=y0;
+    cur.steps=0;
+    map[y0][x0]='#';
+    priority_queue<pos> q;
+    q.push(cur);
+    while(!q.empty()){
+        cur=q.top();
+        q.pop();
+        if(map[cur.y][cur.x]=='R'){
+            printf("%d\n",cur.steps);
+            return;
+        }
+        for(int i=0;i<4;i++){
+            nex.x=cur.x+m[i].x;
+            nex.y=cur.y+m[i].y;
+            if(nex.x>=1&&nex.x<=M&&nex.y>=1&&nex.y<=N){
+                if(map[nex.y][nex.x]=='.'){
+                    nex.steps=cur.steps+1;
+                    q.push(nex);
+                    map[nex.y][nex.x]='#';
+                }
+                if(map[nex.y][nex.x]=='x'){
+                    nex.steps=cur.steps+2;
+                    q.push(nex);
+                    map[nex.y][nex.x]='#';
+                }
+                if(map[nex.y][nex.x]=='r'){
+                    nex.steps=cur.steps+1;
+                    q.push(nex);
+                    map[nex.y][nex.x]='R';
+                }
+            }
+        }
+    }
+    printf("Poor ANGEL has to stay in the prison all his life.\n");
+    return;
+}

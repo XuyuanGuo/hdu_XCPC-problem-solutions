@@ -1,0 +1,45 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int n,m,tree[500001];
+void add(int x,int k);
+int sum(int i);
+
+int main(){
+    cin>>n>>m;
+    int a,temp=0;
+    for(int i=1;i<=n;i++){
+        cin>>a;
+        add(i,a-temp);
+        temp=a;
+    }
+    int sign,x,y,k;
+    while(m--){
+        cin>>sign;
+        if(sign==1){
+            cin>>x>>y>>k;
+            add(x,k);
+            add(y+1,-k);
+        }else{
+            cin>>x;
+            cout<<sum(x)<<endl;
+        }
+    }
+    return 0;
+}
+
+void add(int x,int k){
+    while(x<=n){
+        tree[x]+=k;
+        x+=(x&-x);
+    }
+}
+
+int sum(int i){
+    int res=0;
+    while(i>0){
+        res+=tree[i];
+        i-=(i&-i);
+    }
+    return res;
+}

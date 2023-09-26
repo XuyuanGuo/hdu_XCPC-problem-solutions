@@ -1,0 +1,33 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+    map<string,string> m;
+    string s;
+    cin>>s;
+    while(cin>>s&&s!="END"){
+        string ans;
+        cin>>ans;
+        m[ans]=s;
+    }
+    cin>>s;
+    getchar();
+    while(getline(cin,s)&&s!="END"){
+        string s2="";
+        for(int i=0;i<s.size();i++){
+            if(s[i]>='a'&&s[i]<='z'){
+                s2+=s[i];
+            }else{
+                if(m.count(s2)){
+                    cout<<m[s2];
+                }else{
+                    cout<<s2;
+                }
+                s2="";
+                cout<<s[i];
+            }
+        }
+        cout<<endl;
+    }
+    return 0;
+}

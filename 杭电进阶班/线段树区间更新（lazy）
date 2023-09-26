@@ -1,0 +1,61 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+struct SegmentTree{
+    int val;
+    int lazy;
+}tree[400001];
+
+void pushup(int rt){
+    tree[rt].val=tree[rt*2].val+tree[rt*2+1].val;
+}
+
+void pushdown(int rt,int ln,int rn){
+    if(tree[rt].lazy){
+        tree[rt<<1].lazy=tree[rt].lazy;
+        tree[rt<<1|1].lazy=tree[rt].lazy;
+        tree[rt<<1].val=tree[rt].lazy*ln;
+        tree[rt<<1|1].val=tree[rt].lazy*rn;
+        tree[rt].lazy=0;
+    }
+}
+
+void bulid(int l,int r,int rt){
+    tree[rt].lazy=0;
+    if(l==r) tree[rt].val=1;
+    else{
+        int m=(l+r)/2;
+        bulid(l,m,rt*2);
+        bulid(m+1,r,rt*2+1);
+        pushup(rt);
+    } 
+}
+
+void Update(int L,int R,int val,int l,int r,int rt){
+    if(l>=L&&r<=R){
+        tree[rt].val=val*(r-l+1);
+        tree[rt].lazy=val;
+    }else{
+        int m=(l+r)/2;
+        pushdown(rt,m-l+1,r-m);
+        if(L<=m) Update(L,R,val,l,m,rt*2);
+        if(R>m) Update(L,R,val,m+1,r,rt*2+1);
+        pushup(rt);
+    } 
+}
+
+int main(){
+    int C,n,q,L,R,val;
+    scanf("%d",&C);
+    while(C--){
+        scanf("%d",&n);
+        bulid(1,n,1);
+        scanf("%d",&q);
+        while(q--){
+            scanf("%d%d%d",&L,&R,&val);
+            Update(L,R,val,1,n,1);
+        }
+        printf("%d\n",tree[1].val);
+    }
+    return 0;
+}

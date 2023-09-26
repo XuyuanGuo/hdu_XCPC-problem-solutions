@@ -1,0 +1,28 @@
+#include<stdio.h>
+#include<math.h>
+#include<string.h>
+#include<algorithm>
+using namespace std;
+
+struct food {
+	int h;
+	int c;
+}f[101];
+
+int main() {
+	int n, m, y[100001];
+	while (scanf("%d", &n) != EOF) {
+		memset(y, 0, sizeof(y));
+		for (int i = 1; i <= n; i++) {
+			scanf("%d%d", &f[i].h, &f[i].c);
+		}
+		scanf("%d", &m);
+		for (int i = 1; i <= n; i++) {
+			for (int j = f[i].c; j <= m; j++) {
+				y[j] = max(y[j], y[j - f[i].c] + f[i].h);
+			}
+		}
+		printf("%d\n", y[m]);
+	}
+	return 0;
+}

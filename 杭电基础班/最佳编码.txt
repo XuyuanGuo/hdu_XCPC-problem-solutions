@@ -1,0 +1,43 @@
+#include<iostream>
+#include<iomanip>
+#include<cstring>
+#include<cmath>
+#include<queue>
+using namespace std;
+
+string str;
+int vacu[30];
+int bfs();
+
+int main(){
+    while(cin>>str){
+        memset(vacu,0,sizeof(vacu));
+        if(str=="END") break;
+        int len=str.length();
+        for(int i=0;i<len;i++){
+            if(str[i]=='_') vacu[26]++;
+            else vacu[str[i]-'A']++;
+        }
+        int res=bfs();
+        cout<<len*8<<" "<<res<<" "<<setiosflags(ios::fixed)<<setprecision(1)<<len*8.0/res<<endl;
+    }
+    return 0;
+}
+
+int bfs(){
+    int ans=0;
+    priority_queue<int,vector<int>,greater<int> >q;
+    for(int i=0;i<27;i++){
+        if(vacu[i]>0){
+            q.push(vacu[i]);
+        }
+    }
+    if(q.size()==1) ans=q.top();
+    while(q.size()>1){
+        int a=q.top(); q.pop(); 
+        int b=q.top(); q.pop();
+        ans+=a+b;
+        q.push(a+b);
+    }
+    return ans;
+}

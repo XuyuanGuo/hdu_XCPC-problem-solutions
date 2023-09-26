@@ -1,0 +1,59 @@
+#include<stdio.h>
+#include<string.h>
+#include<queue>
+#include<algorithm>
+using namespace std;
+
+struct lift{
+    int level;
+    int step;
+};
+
+int n,a,b,k[201],vis[201];
+
+void bfs();
+
+int main(){
+    while(scanf("%d%d%d",&n,&a,&b)==3){
+        memset(vis,0,sizeof(vis));
+        for(int i=1;i<=n;i++){
+            scanf("%d",&k[i]);
+        }
+        bfs();
+    }
+    return 0;
+}
+
+void bfs(){
+    lift cur,nex;
+    cur.level=a;
+    cur.step=0;
+    queue<lift> q;
+    q.push(cur);
+    vis[cur.level]=1;
+    while(!q.empty()){
+        cur=q.front();
+        q.pop();
+        if(cur.level==b){
+            printf("%d\n",cur.step);
+            return;
+            }
+        nex.step=cur.step+1;
+        nex.level=cur.level+k[cur.level];
+        if(nex.level<=n){
+            if(!vis[nex.level]){
+                q.push(nex);
+                vis[nex.level]=1;
+            }
+        }
+        nex.level=cur.level-k[cur.level];
+        if(nex.level>=1){
+            if(!vis[nex.level]){
+                q.push(nex);
+                vis[nex.level]=1;
+            }
+        }
+    }
+    puts("-1");
+    return;
+}

@@ -1,0 +1,49 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+struct Edge{
+    int to,next;
+}edge[3001];
+
+int n,m,indgr[501],res[501],head[3001];
+
+
+void topsort();
+
+int main(){
+    while(cin>>n>>m){
+        memset(indgr,0,sizeof(indgr));
+        memset(edge,0,sizeof(edge));
+        memset(head,-1,sizeof(head));
+        for(int i=1;i<=m;i++){
+            int p1,p2;
+            cin>>p1>>p2;
+            edge[i].to=p2;
+            edge[i].next=head[p1];
+            head[p1]=i;
+            indgr[p2]++;
+        }
+        topsort();
+        for(int i=1;i<=n;i++){
+            cout<<res[i]<<(i==n?"\n":" ");
+        }
+    }
+    return 0;
+}
+
+void topsort(){
+    int k=0;
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=n;j++){
+            if(indgr[j]==0){
+                res[i]=j;
+                indgr[j]--;
+                k=j;
+                break;
+            }
+        }
+        for(int j=head[k];~j;j=edge[j].next){
+            indgr[edge[j].to]--;
+        }
+    }
+}

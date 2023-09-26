@@ -1,0 +1,37 @@
+#define _CRT_SECURE_NO_DEPRECATE
+#include<stdio.h>
+#include<math.h>
+#include<string.h>
+#include<algorithm>
+using namespace std;
+
+struct money {
+	int P;
+	int W;
+}m[501];
+
+int main() {
+	int T, E, F, N;
+	scanf("%d", &T);
+	while (T--) {
+		scanf("%d%d", &E, &F);
+		int* a = new int[F - E + 1];
+		scanf("%d", &N);
+		for (int i = 1; i <= N; i++) {
+			scanf("%d%d", &m[i].P, &m[i].W);
+		}
+		memset(a, -1, (F - E + 1) * 4);
+		a[0] = 0;
+		for (int i = 1; i <= N; i++) {
+			for (int j = 0; j <= F - E; j++) {
+				if (j < m[i].W || a[j - m[i].W] == -1) continue;
+				else if (a[j] == -1) a[j] = a[j - m[i].W] + m[i].P;
+				else a[j] = min(a[j], a[j - m[i].W] + m[i].P);
+			}
+		}
+		if (a[F - E] == -1) printf("This is impossible.\n");
+		else printf("The minimum amount of money in the piggy-bank is %d.\n", a[F - E]);
+		delete[] a;
+	}
+	return 0;
+}

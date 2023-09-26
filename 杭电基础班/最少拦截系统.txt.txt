@@ -1,0 +1,26 @@
+#include<iostream>
+#include<cmath>
+using namespace std;
+
+int main() {
+	int n, a[10001], b[10001];
+	while (cin >> n) {
+		int max = 0;
+		for (int i = 0; i < n; i++) {
+			cin >> a[i];
+			b[i] = 0;
+			int temp = 0;
+			for (int j = 0; j < i; j++) {
+				if (a[i] > a[j] && b[j] > temp) {
+					temp = b[j];
+				}
+			}
+			b[i] = temp + 1;
+			if (b[i] > max) {
+				max = b[i];
+			}
+		}
+		cout << max << endl;
+	}
+	return 0;
+}

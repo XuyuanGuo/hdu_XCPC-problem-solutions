@@ -1,0 +1,42 @@
+#define _CRT_SECURE_NO_DEPRECATE
+#include<stdio.h>
+#include<math.h>
+#include<string.h>
+#include<algorithm>
+using namespace std;
+
+struct rice {
+	int p;
+	int h;
+}r[1001];
+
+int main() {
+	int C, n, m, p, h, c;
+	scanf("%d", &C);
+	while (C--) {
+		scanf("%d%d", &n, &m);
+		int cnt = 1;
+		for (int i = 1; i <= m; i++) {
+			scanf("%d%d%d", &p, &h, &c);
+			int t = 1;
+			while (c >= t) {
+				r[cnt].p = p * t;
+				r[cnt++].h = h * t;
+				c -= t;
+				t *= 2;
+			}
+			if (c != 0) {
+				r[cnt].p = p * c;
+				r[cnt++].h = h * c;
+			}
+		}
+		int f[101] = { 0 };
+		for (int i = 1; i <= cnt-1; i++) {
+			for (int j = n ; j >= r[i].p ; j--) {
+				f[j] = max(f[j], f[j - r[i].p] + r[i].h);
+			}
+		}
+		printf("%d\n", f[n]);
+	}
+	return 0;
+}
